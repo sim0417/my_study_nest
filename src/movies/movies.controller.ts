@@ -1,4 +1,5 @@
 import { MoviesService } from './movies.service';
+import { Movie } from './entities/movie.entity';
 import {
   Controller,
   Delete,
@@ -12,9 +13,11 @@ import {
 
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
+
   @Get()
-  getAll() {
-    return 'This will return all movies';
+  getAll(): Movie[] {
+    return this.moviesService.getAll();
   }
 
   @Get('search')
@@ -23,24 +26,23 @@ export class MoviesController {
   }
 
   @Get('/:id')
-  getOne(@Param('id') movieId: string) {
-    return `return One movie ID : ${movieId}`;
+  getOne(@Param('id') movieId: string): Movie {
+    return this.moviesService.getOne(movieId);
   }
 
   @Post()
   makeOne(@Body() movieData: any) {
-    console.log(movieData);
-    return `make one movie`;
+    return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
   deleteOne(@Param('id') movieId: string) {
-    return `delete movie ID : ${movieId}`;
+    return this.moviesService.delete(movieId);
   }
 
   @Patch('/:id')
   updateOne(@Param('id') movieId: string, @Body() movieData: any) {
-    console.log(movieData);
+    this.moviesService.update(movieId, movieData);
     return `update movie ID : ${movieId}`;
   }
 }
