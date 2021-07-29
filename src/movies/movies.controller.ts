@@ -1,5 +1,7 @@
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 import {
   Controller,
   Delete,
@@ -21,27 +23,27 @@ export class MoviesController {
   }
 
   @Get('search')
-  search(@Query('year') year: string) {
+  search(@Query('year') year: number) {
     return `return search result, year : ${year}`;
   }
 
   @Get('/:id')
-  getOne(@Param('id') movieId: string): Movie {
+  getOne(@Param('id') movieId: number): Movie {
     return this.moviesService.getOne(movieId);
   }
 
   @Post()
-  makeOne(@Body() movieData: any) {
+  makeOne(@Body() movieData: CreateMovieDto) {
     return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
-  deleteOne(@Param('id') movieId: string) {
+  deleteOne(@Param('id') movieId: number) {
     return this.moviesService.delete(movieId);
   }
 
   @Patch('/:id')
-  updateOne(@Param('id') movieId: string, @Body() movieData: any) {
+  updateOne(@Param('id') movieId: number, @Body() movieData: UpdateMovieDto) {
     this.moviesService.update(movieId, movieData);
     return `update movie ID : ${movieId}`;
   }
