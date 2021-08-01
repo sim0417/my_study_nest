@@ -18,6 +18,26 @@ describe('MoviesService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('create', () => {
+    it('should create a movie', () => {
+      const before = service.getAll().length;
+      service.create({
+        title: 'Test movie',
+        year: 2021,
+        genres: ['action', 'drama'],
+      });
+      const after = service.getAll().length;
+      const movie = service.getOne(1);
+      expect(after).toBeGreaterThan(before);
+      expect(movie).toStrictEqual({
+        id: 1,
+        title: 'Test movie',
+        year: 2021,
+        genres: ['action', 'drama'],
+      });
+    });
+  });
+
   describe('getAll', () => {
     it('should return an array', () => {
       const result = service.getAll();
@@ -77,23 +97,34 @@ describe('MoviesService', () => {
     });
   });
 
-  describe('create', () => {
-    it('should create a movie', () => {
-      const before = service.getAll().length;
+  describe('update', () => {
+    it('should update movie', () => {
       service.create({
         title: 'Test movie',
         year: 2021,
         genres: ['action', 'drama'],
       });
-      const after = service.getAll().length;
+
+      service.update(1, { title: 'Update Test' });
+
       const movie = service.getOne(1);
-      expect(after).toBeGreaterThan(before);
       expect(movie).toStrictEqual({
         id: 1,
-        title: 'Test movie',
+        title: 'Update Test',
         year: 2021,
         genres: ['action', 'drama'],
       });
+    });
+
+    it('should return 404 error', () => {
+      try {
+        service.update(-1, {
+          title: 'Test2',
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Movie with ID -1 not found.');
+      }
     });
   });
 });
