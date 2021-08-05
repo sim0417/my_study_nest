@@ -8,7 +8,6 @@ export class MoviesService {
   private movies: Movie[] = [];
 
   getAll(): Movie[] {
-    // TODO : get real data
     return this.movies;
   }
 

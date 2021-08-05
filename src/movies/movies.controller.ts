@@ -23,7 +23,7 @@ export class MoviesController {
   }
 
   @Get('search')
-  search(@Query('year') year: number) {
+  search(@Query('year') year: number): string {
     return `return search result, year : ${year}`;
   }
 
@@ -33,17 +33,20 @@ export class MoviesController {
   }
 
   @Post()
-  makeOne(@Body() movieData: CreateMovieDto) {
+  makeOne(@Body() movieData: CreateMovieDto): number {
     return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
-  deleteOne(@Param('id') movieId: number) {
+  deleteOne(@Param('id') movieId: number): void {
     return this.moviesService.delete(movieId);
   }
 
   @Patch('/:id')
-  updateOne(@Param('id') movieId: number, @Body() movieData: UpdateMovieDto) {
+  updateOne(
+    @Param('id') movieId: number,
+    @Body() movieData: UpdateMovieDto,
+  ): string {
     this.moviesService.update(movieId, movieData);
     return `update movie ID : ${movieId}`;
   }
